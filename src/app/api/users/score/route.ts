@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import User from "@/modal/userModal";
+import {User} from "@/modal/userModal";
 import Score from "@/modal/scoreModal"; // Model to store scores
 
 export async function POST(req: NextRequest) {
