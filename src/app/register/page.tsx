@@ -4,6 +4,10 @@ import React, {useEffect, useState} from 'react'
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import toast from 'react-hot-toast';
+import Image from 'next/image';
+import Logo from '../../image/logo.svg'
+import Navbar from '@/components/Navbar';
+
 
 const Registerpage = () => {
     const router = useRouter(); 
@@ -35,9 +39,12 @@ const Registerpage = () => {
     }
     },[user])
 return (
+    <>
+    <Navbar/>
     <div className='flex bg-[#669bbc] min-h-screen justify-center items-center'>
-    <div className="bg-white p-10 rounded-lg shadow-lg">
-        <h1 className='font-bold text-center text-xl'>SignUp</h1>
+    <div className="bg-white p-5 rounded-lg shadow-lg mt-20">
+        <Image src={Logo} alt='logo' className='h-40'/>
+        <h1 className='font-bold text-center text-xl font-[Montserrat]'>SIGNUP</h1>
         <div className='flex flex-col my-4'>
             <label>Username</label>
             <input 
@@ -66,6 +73,7 @@ return (
         <p className='mt-4'>Already have an Account? <Link className='font-bold hover:underline' href='/login'>Login</Link></p>
     </div>
     </div>
+    </>
 )
 }
 

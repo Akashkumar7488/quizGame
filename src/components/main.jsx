@@ -20,7 +20,7 @@ const Main = () => {
             <p className='text-base text-white font-medium font-[Montserrat] sm:mt-6 sm:text-lg lg:text-xl leading-relaxed max-w-96 mx-auto text-start'>
             Welcome to Quizard, where knowledge meets fun! Unleash your intellect with our captivating quizzes spanning various topics. Challenge yourself, compete with friends, and embark on a journey of discovery. Engage in brain-teasing trivia that entertains and educates. Quizard - Where every question unlocks a world of possibilities!
             </p>
-            <a href="/livequiz">
+            <a href="/gamesection">
             <button className='mt-6 bg-yellow-400 text-gray-900 hover:bg-yellow-500 rounded px-6 py-3 text-lg font-[Montserrat] transition-all duration-300'>
             Start Quiz
             </button>
