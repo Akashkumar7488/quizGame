@@ -202,7 +202,7 @@
 
 
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import axios from "axios";
 import toast from "react-hot-toast";
@@ -235,9 +235,7 @@ const QuizPage = () => {
       try {
         setLoading(true);
         if (category) {
-          const response = await axios.get<Question[]>(
-            `/api/users/quiz?category=${category}&limit=10&difficulty=medium`
-          );
+          const response = await axios.get<Question[]>(`/api/users/quiz?category=${category}&limit=10&difficulty=medium`);
           setQuestions(response.data);
         } else {
           toast.error("No category specified");
@@ -268,7 +266,6 @@ const QuizPage = () => {
 
   const handleSelectAnswer = (answer: string) => {
     if (!questions[currentQuestionIndex]) return;
-
     if (selectedAnswer) return;
 
     setSelectedAnswer(answer);
@@ -290,7 +287,7 @@ const QuizPage = () => {
       setTimerActive(true);
     } else {
       setQuizComplete(true);
-      handleSubmitQuiz(); // Automatically submit the quiz when it's completed
+      handleSubmitQuiz();
     }
   };
 
@@ -298,7 +295,7 @@ const QuizPage = () => {
     try {
       await axios.post("/api/users/submit", { score });
       toast.success("Quiz submitted successfully!");
-      router.push("/leaderboard"); // Redirect to the leaderboard page
+      router.push("/leaderboard");
     } catch (error) {
       console.error("Error submitting quiz", error);
       toast.error("Failed to submit quiz");
@@ -340,8 +337,8 @@ const QuizPage = () => {
                   className={`w-full py-2.5 px-5 mb-2 font-medium text-gray-800 font-[Montserrat] text-xl focus:outline-none bg-white rounded-lg border ${
                     selectedAnswer === answer
                       ? answer === currentQuestion.correctAnswer
-                        ? "bg-[#51e270] text-white"
-                        : "bg-[#df3c52] text-white"
+                        ? "bg-[#57f97a] text-white"
+                        : "bg-[#e13e53] text-white"
                       : ""
                   }`}
                 >
@@ -349,7 +346,6 @@ const QuizPage = () => {
                 </button>
               ))}
             </div>
-
             <div className="flex justify-center">
               {quizComplete ? (
                 <button
@@ -374,4 +370,11 @@ const QuizPage = () => {
   );
 };
 
-export default QuizPage;
+// Wrapper component with Suspense
+const QuizGameWrapper = () => (
+  <Suspense fallback={<div>Loading quiz...</div>}>
+    <QuizPage />
+  </Suspense>
+);
+
+export default QuizGameWrapper;
