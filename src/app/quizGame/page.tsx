@@ -406,8 +406,8 @@ const QuizPage = () => {
                   className={`w-full py-2.5 px-5 mb-2 font-medium text-gray-800 font-[Montserrat] text-xl focus:outline-none bg-white rounded-lg border ${
                     selectedAnswer === answer
                       ? answer === currentQuestion.correctAnswer
-                        ? "bg-green-500 text-white"
-                        : "bg-red-500 text-white"
+                        ? "bg-[#6be585] text-white"
+                        : "bg-[#dd3e54] text-white"
                       : ""
                   }`}
                 >
