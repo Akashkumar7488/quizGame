@@ -1,7 +1,6 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { Suspense, useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-
 import axios from "axios";
 import toast from "react-hot-toast";
 
@@ -14,7 +13,7 @@ interface Question {
   difficulty: string;
 }
 
-const QuizPage = () => {
+const QuizContent = ({ category }: { category: string }) => {
   const [questions, setQuestions] = useState<Question[]>([]);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState<number>(0);
   const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
@@ -22,24 +21,16 @@ const QuizPage = () => {
   const [timer, setTimer] = useState<number>(60);
   const [quizComplete, setQuizComplete] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(true);
-  const [timerActive, setTimerActive] = useState<boolean>(true); // New state to manage timer activity
+  const [timerActive, setTimerActive] = useState<boolean>(true);
 
   const router = useRouter();
-  const searchParams = useSearchParams();
-  const category = searchParams.get("category"); // Extract category from URL
 
   useEffect(() => {
     const fetchQuestions = async () => {
       try {
         setLoading(true);
-        if (category) {
-          const response = await axios.get<Question[]>(
-            `/api/users/quiz?category=${category}&limit=10&difficulty=medium`
-          );
-          setQuestions(response.data);
-        } else {
-          toast.error("No category specified");
-        }
+        const response = await axios.get<Question[]>(`/api/users/quiz?category=${category}&limit=10&difficulty=medium`);
+        setQuestions(response.data);
       } catch (error) {
         console.error("Error fetching quiz questions", error);
         toast.error("Failed to load quiz questions");
@@ -68,7 +59,7 @@ const QuizPage = () => {
     if (!questions[currentQuestionIndex]) return;
 
     setSelectedAnswer(answer);
-    setTimerActive(false); // Stop the timer when an answer is selected
+    setTimerActive(false);
 
     if (answer === questions[currentQuestionIndex].correctAnswer) {
       setScore((prevScore) => prevScore + 4);
@@ -82,8 +73,8 @@ const QuizPage = () => {
     if (currentQuestionIndex < questions.length - 1) {
       setCurrentQuestionIndex((prev) => prev + 1);
       setSelectedAnswer(null);
-      setTimer(60); // Reset the timer for the next question
-      setTimerActive(true); // Reactivate the timer for the next question
+      setTimer(60);
+      setTimerActive(true);
     } else {
       setQuizComplete(true);
     }
@@ -101,7 +92,7 @@ const QuizPage = () => {
   };
 
   if (loading) {
-    return <div className="text-white text-center pt-20">Loading...</div>;
+    return <div className="text-white text-center pt-20">Loading questions...</div>;
   }
 
   if (questions.length === 0) {
@@ -164,6 +155,17 @@ const QuizPage = () => {
         </section>
       </div>
     </div>
+  );
+};
+
+const QuizPage = () => {
+  const searchParams = useSearchParams();
+  const category = searchParams.get("category");
+
+  return (
+    <Suspense fallback={<div className="text-white text-center pt-20">Loading quiz...</div>}>
+      {category ? <QuizContent category={category} /> : <div className="text-white text-center pt-20">No category specified</div>}
+    </Suspense>
   );
 };
 
