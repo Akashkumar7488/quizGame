@@ -27,12 +27,24 @@ export async function POST(req:NextRequest) {
             const token = jwt.sign(tokenData, process.env.TOKEN_SECRET!, {expiresIn:"1d"});
             const response = NextResponse.json({
                 message: `Welcome back ${user.username}`,
-                success: true
+                success: true,
+                userId: user,
             });
+
+            // Set the httpOnly token cookie
             response.cookies.set("token", token, {
-                httpOnly: true,
-                maxAge: 60 * 60 * 24,  // 1 day
+            httpOnly: true,
+            maxAge: 60 * 60 * 24,  // 1 day
+            secure: process.env.NODE_ENV === "production", // Set to true in production
             });
+
+        // Set a separate cookie for user ID
+            response.cookies.set("userId", user._id.toString(), {
+            maxAge: 60 * 60 * 24,  // 1 day
+            secure: process.env.NODE_ENV === "production", // Set to true in production
+            });
+
+
             return response;
             
         
