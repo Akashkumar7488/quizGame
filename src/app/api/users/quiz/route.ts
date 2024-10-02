@@ -54,9 +54,9 @@ import { connect } from "@/database/dbConnection";
 
 connect();
 
-export async function GET(request: NextRequest) {
+export async function GET(req: NextRequest) {
   try {
-    const { searchParams } = new URL(request.url);
+    const { searchParams } = new URL(req.url);
     const category = searchParams.get('category');
     const difficulty = searchParams.get('difficulty');
     const limit = parseInt(searchParams.get('limit') || '10', 10); // Provide a default value as a string
