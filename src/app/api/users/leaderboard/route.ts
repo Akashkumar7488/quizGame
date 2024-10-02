@@ -37,7 +37,7 @@ export async function GET(request: NextRequest) {
     const leaderboard = await Score.find()
       .populate('userId', 'username') // Fetch 'username' from User model
       .sort({ score: -1 }) // Sort by score in descending order
-      .limit(10); // Limit to top 10 scores
+      // .limit(10); // Limit to top 10 scores
 
     return NextResponse.json(leaderboard);
   } catch (error) {
