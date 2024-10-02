@@ -139,8 +139,8 @@
 //              className={`w-full py-2.5 px-5 mb-2 font-medium text-gray-800 font-[Montserrat] text-xl focus:outline-none bg-white rounded-lg border ${
 //              selectedAnswer === answer
 //             ? answer === currentQuestion.correctAnswer
-//             ? "bg-[#51e270] text-white"
-//             : "bg-[#df3c52] text-white"
+//             ? "bg-[#61f381] text-white"
+//             : "bg-[#f14e64] text-white"
 //           : ""
 //       }`}
 //     >
