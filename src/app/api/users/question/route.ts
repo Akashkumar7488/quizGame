@@ -1,4 +1,3 @@
-// Example API route in Next.js (pages/api/questions.js)
 import { NextRequest, NextResponse } from 'next/server';
 import { connect } from "@/database/dbConnection";
 import Question from '@/modal/questionModal'; // Adjust the import according to your structure

@@ -63,6 +63,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { FaArrowLeft } from "react-icons/fa";
+import Link from 'next/link';
 
 interface LeaderboardEntry {
   _id: string;
@@ -100,7 +101,9 @@ const LeaderboardPage = () => {
   return (
     <div className="bg-[#203A43] min-h-screen p-8">
       <div className='flex items-center mb-6 mt-20'>
-  <FaArrowLeft className=" cursor-pointer text-yellow-600 text-2xl mr-4" /> {/* Add margin for spacing */}
+        <Link href='/review'>
+  <FaArrowLeft className=" cursor-pointer text-yellow-600 text-2xl mr-4" /> 
+  </Link>
   <h1 className="text-3xl font-bold text-yellow-600">Leaderboard</h1>
   </div>
       <div className="bg-white rounded-lg shadow overflow-hidden">

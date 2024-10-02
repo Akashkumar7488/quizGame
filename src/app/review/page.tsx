@@ -2,6 +2,8 @@
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import axios from 'axios';
+import { FaArrowRight } from "react-icons/fa";
+import Link from 'next/link';
 
 interface AnsweredQuestion {
   questionId: string;
@@ -44,7 +46,12 @@ const ReviewPage: React.FC = () => {
 
   return (
     <div className="p-5 bg-[#203A43]">
-      <h1 className="text-2xl font-bold mb-4 mt-20 text-yellow-600 font-[Montserrat]">Quiz Review</h1>
+      <div className='flex items-center mb-6 mt-20 gap-4'>
+      <h1 className="text-2xl font-bold text-yellow-600 font-[Montserrat]">Quiz Review</h1>
+      <Link href='/leaderboard'>
+      <FaArrowRight className=" cursor-pointer text-yellow-600 text-2xl mr-4" /> 
+      </Link>
+      </div>
       {answeredQuestions.length === 0 ? (
         <p>No questions answered.</p>
       ) : (
