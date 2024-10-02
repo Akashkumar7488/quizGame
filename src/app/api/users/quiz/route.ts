@@ -48,25 +48,59 @@
 
 
 
+// import { NextRequest, NextResponse } from "next/server";
+// import Question from "@/modal/questionModal";
+// import { connect } from "@/database/dbConnection";
+
+// connect();
+
+// export async function GET(req: NextRequest) {
+//   try {
+//     const { searchParams } = new URL(req.url);
+//     const category = searchParams.get('category');
+//     const difficulty = searchParams.get('difficulty');
+//     const limit = parseInt(searchParams.get('limit') || '10', 10); // Provide a default value as a string
+
+//     // Define the type for the query
+//     let query: { category?: string; difficulty?: string } = {};
+    
+//     if (category) query.category = category; // TypeScript knows category is a string if it exists
+//     if (difficulty) query.difficulty = difficulty;
+
+//     const questions = await Question.aggregate([
+//       { $match: query },
+//       { $sample: { size: limit } }
+//     ]);
+
+//     return NextResponse.json(questions);
+//   } catch (error) {
+//     console.error('Failed to fetch questions:', error);
+//     return NextResponse.json({ message: "Failed to fetch questions" }, { status: 500 });
+//   }
+// }
+
+
 import { NextRequest, NextResponse } from "next/server";
 import Question from "@/modal/questionModal";
 import { connect } from "@/database/dbConnection";
 
+// Establish a connection to the database
 connect();
 
 export async function GET(req: NextRequest) {
   try {
-    const { searchParams } = new URL(req.url);
-    const category = searchParams.get('category');
-    const difficulty = searchParams.get('difficulty');
-    const limit = parseInt(searchParams.get('limit') || '10', 10); // Provide a default value as a string
+    // Use URL constructor to extract searchParams from req
+    const url = new URL(req.url);
+    const category = url.searchParams.get('category');
+    const difficulty = url.searchParams.get('difficulty');
+    const limit = parseInt(url.searchParams.get('limit') || '10', 10); // Provide a default limit
 
-    // Define the type for the query
-    let query: { category?: string; difficulty?: string } = {};
-    
-    if (category) query.category = category; // TypeScript knows category is a string if it exists
+    // Build the query object based on provided parameters
+    const query: { category?: string; difficulty?: string } = {};
+    if (category) query.category = category;
     if (difficulty) query.difficulty = difficulty;
 
+    // Fetch questions from the database using aggregation
     const questions = await Question.aggregate([
       { $match: query },
       { $sample: { size: limit } }

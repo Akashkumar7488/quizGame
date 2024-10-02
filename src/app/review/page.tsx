@@ -171,7 +171,6 @@
 // export default ReviewPage;
 
 
-
 "use client";
 import React, { useEffect, useState, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
@@ -191,6 +190,7 @@ interface Question {
   correctAnswer: string;
 }
 
+// Function to fetch questions based on answered questions
 const fetchQuestions = async (answeredQuestions: AnsweredQuestion[]) => {
   if (answeredQuestions.length === 0) return [];
   const questionIds = answeredQuestions.map(q => q.questionId).join(',');
@@ -198,9 +198,10 @@ const fetchQuestions = async (answeredQuestions: AnsweredQuestion[]) => {
   return response.data;
 };
 
+// ReviewContent component to display questions and answers
 const ReviewContent: React.FC<{ answeredQuestions: AnsweredQuestion[] }> = ({ answeredQuestions }) => {
   const [questions, setQuestions] = useState<Question[]>([]);
-  
+
   useEffect(() => {
     const loadQuestions = async () => {
       const fetchedQuestions = await fetchQuestions(answeredQuestions);
@@ -228,6 +229,7 @@ const ReviewContent: React.FC<{ answeredQuestions: AnsweredQuestion[] }> = ({ an
   );
 };
 
+// Main ReviewPage component
 const ReviewPage: React.FC = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -260,4 +262,11 @@ const ReviewPage: React.FC = () => {
   );
 };
 
-export default ReviewPage;
+// Wrapping the entire component in Suspense
+const ReviewPageWrapper = () => (
+  <Suspense fallback={<div>Loading review page...</div>}>
+    <ReviewPage />
+  </Suspense>
+);
+
+export default ReviewPageWrapper;
