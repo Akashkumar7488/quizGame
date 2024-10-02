@@ -19,8 +19,8 @@
 
 // src/app/page.tsx
 "use client"
-import Main from '../components/Main';
-import Cardsection from '../components/Cardsection';
+import Main from '../components/main';
+import Cardsection from '../components/cardsection';
 import MyComponent from '@/components/MyComponent';
 
 export default function Home() {
