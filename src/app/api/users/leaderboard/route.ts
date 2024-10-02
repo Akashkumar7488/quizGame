@@ -61,7 +61,7 @@ export async function GET(request:NextRequest) {
     const leaderboard = await Score.find()
       .populate('userId', 'username') // Populate userId with the 'username' field from the User model
       .sort({ score: -1 }) // Sort by score in descending order
-      .limit(10); // Optionally limit to top 10 scores, uncomment if needed
+      // .limit(10); // Optionally limit to top 10 scores, uncomment if needed
 
     // Return the leaderboard as JSON response
     return NextResponse.json(leaderboard);
