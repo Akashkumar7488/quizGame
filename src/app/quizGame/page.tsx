@@ -429,6 +429,18 @@ const QuizPage = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [timerActive, setTimerActive] = useState<boolean>(true);
 
+    // State to track answered questions
+    const [answeredQuestions, setAnsweredQuestions] = useState<{ 
+      questionId: string; 
+      answer: string | null; 
+      correct: boolean; 
+    }[]>([]);
+
+
+    const [attemptedQuestions, setAttemptedQuestions] = useState<Question[]>([]);
+    const [unattemptedQuestions, setUnattemptedQuestions] = useState<Question[]>(questions);
+
+
   const router = useRouter();
   const searchParams = useSearchParams();
   const category = searchParams.get("category");
@@ -501,20 +513,50 @@ const QuizPage = () => {
     return () => clearInterval(interval);
   }, [timer, loading, questions, timerActive]);
 
+  // const handleSelectAnswer = (answer: string) => {
+  //   if (!questions[currentQuestionIndex]) return;
+  //   if (selectedAnswer) return;
+
+  //   setSelectedAnswer(answer);
+  //   setTimerActive(false);
+
+  //   if (answer === questions[currentQuestionIndex].correctAnswer) {
+  //     setScore((prevScore) => prevScore + 4);
+  //     toast.success("Correct!");
+  //   } else {
+  //     toast.error("Wrong answer!");
+  //   }
+  // };
+
   const handleSelectAnswer = (answer: string) => {
     if (!questions[currentQuestionIndex]) return;
     if (selectedAnswer) return;
-
+  
+    const isCorrect = answer === questions[currentQuestionIndex].correctAnswer;
     setSelectedAnswer(answer);
     setTimerActive(false);
-
-    if (answer === questions[currentQuestionIndex].correctAnswer) {
+    setAnsweredQuestions(prev => [
+      ...prev,
+      {
+        questionId: questions[currentQuestionIndex]._id,
+        answer: answer,
+        correct: isCorrect,
+      }
+    ]);
+  
+    // Update attempted and unattempted questions
+    setAttemptedQuestions(prev => [...prev, questions[currentQuestionIndex]]);
+    setUnattemptedQuestions(prev => prev.filter(q => q._id !== questions[currentQuestionIndex]._id));
+  
+    if (isCorrect) {
       setScore((prevScore) => prevScore + 4);
       toast.success("Correct!");
     } else {
       toast.error("Wrong answer!");
     }
   };
+  
+  
 
   const handleNextQuestion = () => {
     if (currentQuestionIndex < questions.length - 1) {
@@ -528,28 +570,57 @@ const QuizPage = () => {
     }
   };
 
+  // const handleSubmitQuiz = async () => {
+  //   try {
+  //     // const userId = getUserIdFromToken();
+  //     const userId = localStorage.getItem('userId')
+  //     console.log("Retrieved User ID:", userId);
+  //     console.log("User ID:", userId);
+  //     console.log("Score:", score);
+
+
+  //     if (!userId) {
+  //       toast.error("User ID is missing!");
+  //       return;
+  //     }
+
+  //     await axios.post("/api/users/submit", { score, userId });
+  //     toast.success("Quiz submitted successfully!");
+  //     router.push("/leaderboard");
+  //   } catch (error: any) {
+  //     console.error("Error submitting quiz:", error.response?.data || error.message);
+  //     toast.error("Failed to submit quiz");
+  //   }
+  // };
+
   const handleSubmitQuiz = async () => {
     try {
-      // const userId = getUserIdFromToken();
-      const userId = localStorage.getItem('userId')
+      const userId = localStorage.getItem('userId');
       console.log("Retrieved User ID:", userId);
-      console.log("User ID:", userId);
       console.log("Score:", score);
-
-
+  
       if (!userId) {
         toast.error("User ID is missing!");
         return;
       }
-
+  
+      // Submit the score
       await axios.post("/api/users/submit", { score, userId });
       toast.success("Quiz submitted successfully!");
-      router.push("/leaderboard");
+  
+      // Construct the URL with query parameters
+      const attempted = encodeURIComponent(JSON.stringify(attemptedQuestions));
+      const unattempted = encodeURIComponent(JSON.stringify(unattemptedQuestions));
+      const answered = encodeURIComponent(JSON.stringify(answeredQuestions));
+  
+      router.push(`/review?attempted=${attempted}&unattempted=${unattempted}&answered=${answered}`);
     } catch (error: any) {
       console.error("Error submitting quiz:", error.response?.data || error.message);
       toast.error("Failed to submit quiz");
     }
   };
+  
+  
 
   if (loading) {
     return <div className="text-white text-center pt-20">Loading...</div>;
@@ -586,8 +657,8 @@ const QuizPage = () => {
                   className={`w-full py-2.5 px-5 mb-2 font-medium text-gray-800 font-[Montserrat] text-xl focus:outline-none bg-white rounded-lg border ${
                     selectedAnswer === answer
                       ? answer === currentQuestion.correctAnswer
-                        ? "bg-[#5cf47d] text-white"
-                        : "bg-[#ea4359] text-white"
+                        ? "bg-[#61f381] text-white"
+                        : "bg-[#f14e64] text-white"
                       : ""
                   }`}
                 >
