@@ -1,10 +1,13 @@
+"use client"
 import React from 'react';
 import ComputerCards from './computercards';
 import Physicscard from '../components/physicscard';
 import Sportscard from '../components/sportscard';
 import Datasciencecard from '../components/Datasciencecard';
 
+
 const Cardsection = () => {
+
     return (
         <div className='w-full bg-[#283048] relative pt-10'>
             <div className='flex justify-center items-center w-[90%] rounded-[10px] border-2 border-gray-300 bg-[#1488CC] mx-auto'>
@@ -25,6 +28,7 @@ const Cardsection = () => {
             {renderSection("Sports", <Sportscard />)}
             {renderSection("Physics", <Physicscard />)}
             {renderSection("Data Science", <Datasciencecard />)}
+
         </div>
     );
 };

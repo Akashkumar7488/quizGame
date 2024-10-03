@@ -116,7 +116,7 @@ const LeaderboardPage = () => {
               <th className="px-6 py-3 text-left text-lg bg-[#203A43] font-medium font-[Montserrat] text-yellow-500 uppercase tracking-wider">Date</th>
             </tr>
           </thead>
-          <tbody className="bg-[#203A43] divide-y divide-gray-200">
+          <tbody className="bg-[#203A43] divide-y divide-gray-200 min-h-screen">
             {leaderboard.map((entry, index) => (
               <tr 
               key={entry._id} 

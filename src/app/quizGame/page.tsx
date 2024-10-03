@@ -477,6 +477,7 @@ const QuizPage = () => {
     // Log userId when the component mounts
     const userId = getUserIdFromToken();
     console.log("Retrieved User ID:", userId);
+    
 
     // Fetch questions
     const fetchQuestions = async () => {
@@ -657,8 +658,8 @@ const QuizPage = () => {
                   className={`w-full py-2.5 px-5 mb-2 font-medium text-gray-800 font-[Montserrat] text-xl focus:outline-none bg-white rounded-lg border ${
                     selectedAnswer === answer
                       ? answer === currentQuestion.correctAnswer
-                        ? "bg-[#59f37b] text-white"
-                        : "bg-[#e55165] text-white"
+                        ? "bg-[#59f37b] text-black"
+                        : "bg-[#e55165] text-black"
                       : ""
                   }`}
                 >

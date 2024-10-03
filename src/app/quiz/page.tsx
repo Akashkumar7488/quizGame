@@ -3,7 +3,6 @@ import React, { Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
-import Footer from '@/components/footer';
 import Navbar from '@/components/Navbar';
 import Quiz from '../../image/quiz (1).png';
 
@@ -40,7 +39,6 @@ const PageContent = () => {
         </div>
       </div>
       
-      <Footer />
     </div>
   );
 };

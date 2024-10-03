@@ -79,15 +79,17 @@ import React from 'react';
 import Link from 'next/link';
 import { AiOutlineMenu, AiOutlineClose } from "react-icons/ai";
 import { useAuth } from '@/components/context/AuthContext'; // Ensure this path is correct
+import { useRouter } from 'next/navigation';
 
 const Navbar = ({ className = '' }) => {
+    const router = useRouter();
     const { isAuthenticated, logout } = useAuth(); // Get authentication state and logout function
     const [menuOpen, setMenuOpen] = React.useState(false);
 
     const handleLogout = async () => {
         await logout(); // Call the logout function from context
         setMenuOpen(false); // Close the menu after logging out
-        // Optionally redirect or handle additional logic if needed
+        router.push('/')// Optionally redirect or handle additional logic if needed
     };
 
     const handleNav = () => {

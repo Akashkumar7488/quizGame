@@ -4,7 +4,7 @@ import Physicscard from '../../components/physicscard'
 import Sportscard from '../../components/sportscard'
 import Datasciencecard from '../../components/Datasciencecard'
 import Navbar from '../../components/Navbar'
-import Footer from '../../components/footer'
+
 
 const page = () => {
 return (
@@ -48,7 +48,6 @@ return (
     <Datasciencecard/>
     </div>
     </div>
-    <Footer/>
     </>
 )
 }

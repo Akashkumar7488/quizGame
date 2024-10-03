@@ -126,13 +126,25 @@ const submitHandler = async () => {
             const userId = res.data.userId; // This is now an object
             const id = userId._id; // Extract the _id
             const username = userId.username; // Extract the username
+            const authToken = res.data.token; //extract authToken to verify user login then it send me to gamesection
+
+            // Check if authToken exists
+            console.log("Auth Token:", authToken); 
+
+            if (!authToken) {
+                console.error("Auth token is missing in the response!");
+            }
 
             // Store the user ID and username in local storage
+            
             localStorage.setItem("userId", id);
             localStorage.setItem("username", username);
+            localStorage.setItem("authToken", authToken); // Store the auth token
 
             console.log("Stored User ID:", localStorage.getItem("userId")); // Confirm it's stored
             console.log("Stored Username:", localStorage.getItem("username")); // Confirm it's stored
+            console.log("Stored Auth Token:", localStorage.getItem("authToken")); // Confirm it's stored
+            
 
             login(); // Call your login function
             toast.success(res.data.message);
